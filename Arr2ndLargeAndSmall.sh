@@ -4,36 +4,28 @@ function threeDigVal () {
 	echo $((RANDOM%900+100))
 }
 
+# make array with 10 3 digit values
 for (( i=0; i<10; i++ ))
 do
 	arr[$i]=$(threeDigVal)
 done
 
-firstLarge=${arr[0]}
-firstSmall=${arr[0]}
-secondLarge=100
-secondSmall=999
+echo "Array is ${arr[@]}"
 
-for (( i=1; i<10; i++ ))
+# performed selection sort
+for (( i=0; i<9; i++ ))
 do
-	if [ ${arr[$i]} -gt $firstLarge ]
-	then
-		secondLarge=$firstLarge
-		firstLarge=${arr[$i]}
-	elif [ ${arr[$i]} -gt $secondLarge ]
-	then
-		secondLarge=${arr[$i]}
-	fi
-
-	if [ ${arr[$i]} -lt $firstSmall ]
-	then
-		secondSmall=$firstSmall
-		firstSmall=${arr[$i]}
-	elif [ ${arr[$i]} -lt $secondSmall ]
-	then
-		secondSmall=${arr[$i]}
-	fi
+	min_ind=$i
+	for (( j=$i+1; j<10; j++ ))
+	do
+		if [ ${arr[$j]} -lt ${arr[$min_ind]} ]
+		then
+			min_ind=$j
+		fi
+	done
+	tmp=${arr[$i]}
+	arr[$i]=${arr[$min_ind]}
+	arr[$min_ind]=$tmp
 done
 
-echo "Array is ${arr[@]}"
-echo "Second largest element is $secondLarge and second smallest element is $secondSmall"
+echo "Second largest element is ${arr[8]} and second smallest element is ${arr[1]}"
